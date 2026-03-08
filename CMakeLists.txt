@@ -1,12 +1,11 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.16)
 project(RTDDS_Hub VERSION 1.0.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Options
-option(BUILD_RT "Build Xenomai real-time components" ON)
-option(BUILD_DDS "Build FastDDS components" ON)
+# CMake modules
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 # Global include directories
 include_directories(
@@ -14,18 +13,10 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/generated/idl
 )
 
-# Build RT components
-if(BUILD_RT)
-    add_subdirectory(src/rt)
-endif()
+add_subdirectory(src)
 
-# Build DDS components
-if(BUILD_DDS)
-    add_subdirectory(src/dds)
-endif()
-
-# Install
-install(DIRECTORY scripts/ 
+# Install runtime scripts
+install(DIRECTORY scripts/
     DESTINATION bin
     USE_SOURCE_PERMISSIONS
 )
